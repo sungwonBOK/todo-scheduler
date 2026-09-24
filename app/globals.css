@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #fffaf3;
+  --paper-deep: #f5eee4;
+  --ink: #2d3559;
+  --muted-ink: #727895;
+  --lavender: #8f7ce7;
+  --lavender-soft: #ede9ff;
+  --mint: #dff5e8;
+  --peach: #ffe4d6;
+  --line: #ece4d9;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--paper);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 15% 12%, rgb(229 218 255 / 42%), transparent 22rem),
+    radial-gradient(circle at 88% 90%, rgb(218 247 234 / 52%), transparent 26rem),
+    var(--paper);
+  font-family: Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:not(:disabled),
+input:not(:disabled) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  color: var(--ink);
+  background: #ddd4ff;
+}
+
+.paper-dots {
+  background-image: radial-gradient(rgb(143 124 231 / 14%) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.diary-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.diary-scrollbar::-webkit-scrollbar-thumb {
+  background: #ddd4cc;
+  border-radius: 999px;
+}

@@ -1,0 +1,281 @@
+<div id="weekly-diary-mockup" class="wd-root">
+  <style>
+    #weekly-diary-mockup {
+      --wd-paper: light-dark(#fffaf3, #20223a);
+      --wd-paper-deep: light-dark(#f5eee4, #2a2d46);
+      --wd-surface: light-dark(#fffefb, #30334f);
+      --wd-ink: light-dark(#2d3559, #f3f0fb);
+      --wd-muted: light-dark(#727895, #c2c5dc);
+      --wd-line: light-dark(#ece4d9, #4a4e70);
+      --wd-lavender: #8f7ce7;
+      --wd-lavender-soft: light-dark(#ede9ff, #45405f);
+      --wd-mint: light-dark(#dff5e8, #375549);
+      --wd-peach: light-dark(#ffe4d6, #61483f);
+      --wd-grid-height: 470px;
+      color: var(--wd-ink);
+      font-family: Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+
+    #weekly-diary-mockup * { box-sizing: border-box; }
+    #weekly-diary-mockup button { font: inherit; }
+    #weekly-diary-mockup .wd-window {
+      display: grid;
+      grid-template-columns: 184px minmax(0, 1fr);
+      overflow: hidden;
+      min-height: 650px;
+      border: 1px solid light-dark(rgb(255 255 255 / 80%), rgb(255 255 255 / 12%));
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 82% 6%, light-dark(rgb(229 218 255 / 42%), rgb(143 124 231 / 18%)), transparent 20rem),
+        var(--wd-paper);
+      box-shadow: 0 24px 70px light-dark(rgb(80 65 105 / 12%), rgb(0 0 0 / 32%));
+    }
+    #weekly-diary-mockup .wd-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 26px;
+      padding: 26px 16px 18px;
+      border-right: 1px solid var(--wd-line);
+      background: light-dark(rgb(255 255 255 / 62%), rgb(38 41 64 / 72%));
+    }
+    #weekly-diary-mockup .wd-logo { padding: 0 12px; font-size: 18px; font-weight: 700; letter-spacing: -0.05em; }
+    #weekly-diary-mockup .wd-logo b { color: var(--wd-lavender); }
+    #weekly-diary-mockup .wd-nav { display: grid; gap: 5px; }
+    #weekly-diary-mockup .wd-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 12px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--wd-muted);
+      text-align: left;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    #weekly-diary-mockup .wd-nav-item[aria-current="page"] { background: var(--wd-lavender-soft); color: light-dark(#6252b5, #e8e2ff); }
+    #weekly-diary-mockup .wd-nav-glyph { display: grid; width: 18px; place-items: center; font-size: 15px; }
+    #weekly-diary-mockup .wd-tip {
+      margin-top: auto;
+      padding: 14px;
+      border-radius: 17px;
+      background: light-dark(#fff1e8, #513f43);
+      color: light-dark(#826356, #f1d7cc);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    #weekly-diary-mockup .wd-tip strong { display: block; margin-bottom: 4px; color: light-dark(#6e5247, #ffe9de); }
+    #weekly-diary-mockup .wd-main { min-width: 0; padding: 30px 34px 28px; }
+    #weekly-diary-mockup .wd-topbar, #weekly-diary-mockup .wd-title-row, #weekly-diary-mockup .wd-week-controls, #weekly-diary-mockup .wd-plan-strip, #weekly-diary-mockup .wd-plan-items { display: flex; align-items: center; }
+    #weekly-diary-mockup .wd-topbar { justify-content: space-between; gap: 18px; }
+    #weekly-diary-mockup .wd-eyebrow { margin: 0; color: light-dark(#5d46b1, #d6ceff); font-size: 12px; font-weight: 700; }
+    #weekly-diary-mockup .wd-title-row { gap: 12px; margin-top: 7px; }
+    #weekly-diary-mockup h2 { margin: 0; color: var(--wd-ink); font-size: 29px; font-weight: 700; letter-spacing: -0.065em; }
+    #weekly-diary-mockup .wd-summary { color: var(--wd-muted); font-size: 12px; font-weight: 700; white-space: nowrap; }
+    #weekly-diary-mockup .wd-week-controls { gap: 7px; }
+    #weekly-diary-mockup .wd-control {
+      min-height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--wd-line);
+      border-radius: 10px;
+      background: var(--wd-surface);
+      color: var(--wd-ink);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    #weekly-diary-mockup .wd-control--arrow { width: 34px; padding: 0; font-size: 21px; line-height: 1; }
+    #weekly-diary-mockup .wd-range { min-width: 132px; color: var(--wd-ink); text-align: center; font-size: 12px; font-weight: 700; }
+    #weekly-diary-mockup .wd-plan-strip {
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 24px;
+      padding: 12px 14px;
+      border: 1px solid var(--wd-line);
+      border-radius: 16px;
+      background: light-dark(rgb(255 255 255 / 70%), rgb(48 51 79 / 80%));
+    }
+    #weekly-diary-mockup .wd-plan-copy { flex: 0 0 auto; color: var(--wd-muted); font-size: 11px; font-weight: 700; }
+    #weekly-diary-mockup .wd-plan-copy b { color: var(--wd-ink); }
+    #weekly-diary-mockup .wd-plan-items { justify-content: flex-end; gap: 7px; min-width: 0; }
+    #weekly-diary-mockup .wd-task-chip {
+      overflow: hidden;
+      max-width: 165px;
+      padding: 6px 9px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--wd-lavender-soft);
+      color: light-dark(#5948a8, #e8e2ff);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    #weekly-diary-mockup .wd-task-chip:nth-child(2) { background: var(--wd-mint); color: light-dark(#2f7250, #ddffea); }
+    #weekly-diary-mockup .wd-calendar { margin-top: 18px; border: 1px solid var(--wd-line); border-radius: 20px; background: var(--wd-surface); overflow: hidden; }
+    #weekly-diary-mockup .wd-calendar-head, #weekly-diary-mockup .wd-calendar-body { display: grid; grid-template-columns: 47px repeat(7, minmax(0, 1fr)); }
+    #weekly-diary-mockup .wd-calendar-head { border-bottom: 1px solid var(--wd-line); }
+    #weekly-diary-mockup .wd-head-spacer { border-right: 1px solid var(--wd-line); }
+    #weekly-diary-mockup .wd-day-head { min-width: 0; padding: 11px 6px 10px; border-right: 1px solid var(--wd-line); text-align: center; }
+    #weekly-diary-mockup .wd-day-head:last-child { border-right: 0; }
+    #weekly-diary-mockup .wd-day-head span { display: block; color: var(--wd-muted); font-size: 10px; font-weight: 700; }
+    #weekly-diary-mockup .wd-day-head b { display: inline-grid; width: 24px; height: 24px; margin-top: 4px; place-items: center; border-radius: 50%; color: var(--wd-ink); font-size: 13px; }
+    #weekly-diary-mockup .wd-day-head--today { background: light-dark(rgb(237 233 255 / 55%), rgb(69 64 95 / 60%)); }
+    #weekly-diary-mockup .wd-day-head--today b { background: var(--wd-lavender); color: white; }
+    #weekly-diary-mockup .wd-time-rail { position: relative; height: var(--wd-grid-height); border-right: 1px solid var(--wd-line); }
+    #weekly-diary-mockup .wd-time-label { position: absolute; right: 8px; color: var(--wd-muted); font-size: 9px; line-height: 1; }
+    #weekly-diary-mockup .wd-time-label:nth-child(1) { top: 5%; }
+    #weekly-diary-mockup .wd-time-label:nth-child(2) { top: 22%; }
+    #weekly-diary-mockup .wd-time-label:nth-child(3) { top: 39%; }
+    #weekly-diary-mockup .wd-time-label:nth-child(4) { top: 56%; }
+    #weekly-diary-mockup .wd-time-label:nth-child(5) { top: 73%; }
+    #weekly-diary-mockup .wd-time-label:nth-child(6) { top: 90%; }
+    #weekly-diary-mockup .wd-day-column {
+      position: relative;
+      height: var(--wd-grid-height);
+      border-right: 1px solid var(--wd-line);
+      background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(17% - 1px), var(--wd-line) calc(17% - 1px), var(--wd-line) 17%);
+    }
+    #weekly-diary-mockup .wd-day-column:last-child { border-right: 0; }
+    #weekly-diary-mockup .wd-day-column--today { background-color: light-dark(rgb(237 233 255 / 34%), rgb(69 64 95 / 37%)); }
+    #weekly-diary-mockup .wd-event {
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      display: grid;
+      gap: 3px;
+      overflow: hidden;
+      padding: 7px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--wd-ink);
+      text-align: left;
+      box-shadow: inset 3px 0 0 currentColor;
+    }
+    #weekly-diary-mockup .wd-event strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: -0.03em; }
+    #weekly-diary-mockup .wd-event small { color: currentColor; font-size: 9px; font-weight: 700; opacity: .72; }
+    #weekly-diary-mockup .wd-event[aria-pressed="true"] { outline: 2px solid var(--wd-ink); outline-offset: 2px; }
+    #weekly-diary-mockup .wd-event--lavender { background: var(--wd-lavender-soft); color: light-dark(#5948a8, #e8e2ff); }
+    #weekly-diary-mockup .wd-event--mint { background: var(--wd-mint); color: light-dark(#2f7250, #ddffea); }
+    #weekly-diary-mockup .wd-event--peach { background: var(--wd-peach); color: light-dark(#934a39, #ffd9d0); }
+    #weekly-diary-mockup .wd-event--one { top: 9%; height: 17%; }
+    #weekly-diary-mockup .wd-event--two { top: 39%; height: 8%; }
+    #weekly-diary-mockup .wd-event--three { top: 58%; height: 13%; }
+    #weekly-diary-mockup .wd-event--four { top: 30%; height: 15%; }
+    #weekly-diary-mockup .wd-event--five { top: 75%; height: 10%; }
+    #weekly-diary-mockup .wd-calendar-note { padding: 11px 14px; border-top: 1px solid var(--wd-line); color: var(--wd-muted); font-size: 11px; }
+    #weekly-diary-mockup .wd-calendar-note b { color: light-dark(#5d46b1, #d6ceff); }
+    #weekly-diary-mockup[data-density="compact"] { --wd-grid-height: 400px; }
+    #weekly-diary-mockup[data-density="airy"] { --wd-grid-height: 550px; }
+    @media (max-width: 780px) {
+      #weekly-diary-mockup .wd-window { grid-template-columns: 1fr; min-height: 0; border-radius: 22px; }
+      #weekly-diary-mockup .wd-sidebar { display: none; }
+      #weekly-diary-mockup .wd-main { padding: 22px 18px; }
+      #weekly-diary-mockup .wd-topbar { align-items: flex-start; }
+      #weekly-diary-mockup .wd-week-controls { flex-wrap: wrap; justify-content: flex-end; }
+      #weekly-diary-mockup .wd-range { order: 3; width: 100%; text-align: right; }
+      #weekly-diary-mockup .wd-plan-strip { align-items: flex-start; flex-direction: column; }
+      #weekly-diary-mockup .wd-plan-items { justify-content: flex-start; flex-wrap: wrap; }
+      #weekly-diary-mockup .wd-calendar-head { display: none; }
+      #weekly-diary-mockup .wd-calendar-body { display: block; padding: 8px; }
+      #weekly-diary-mockup .wd-time-rail { display: none; }
+      #weekly-diary-mockup .wd-day-column { height: 220px; margin: 0 0 8px; border: 1px solid var(--wd-line); border-radius: 13px; }
+      #weekly-diary-mockup .wd-day-column::before { content: attr(data-day); position: absolute; left: 10px; top: 9px; color: var(--wd-muted); font-size: 11px; font-weight: 700; }
+      #weekly-diary-mockup .wd-event { left: 66px; right: 8px; }
+    }
+  </style>
+  <section class="wd-window" aria-label="하루결 주간 다이어리 목업">
+    <aside class="wd-sidebar" aria-label="주요 메뉴">
+      <div class="wd-logo">하루<b>결</b></div>
+      <nav class="wd-nav">
+        <button class="wd-nav-item" type="button"><span class="wd-nav-glyph" aria-hidden="true">◷</span>오늘</button>
+        <button class="wd-nav-item" type="button" aria-current="page"><span class="wd-nav-glyph" aria-hidden="true">▦</span>이번 주</button>
+        <button class="wd-nav-item" type="button"><span class="wd-nav-glyph" aria-hidden="true">✦</span>나의 루틴</button>
+        <button class="wd-nav-item" type="button"><span class="wd-nav-glyph" aria-hidden="true">⚙</span>설정</button>
+      </nav>
+      <div class="wd-tip"><strong>이번 주의 작은 팁</strong>할 일은 먼저 적고, 정말 할 시간만 시간표에 놓아보세요.</div>
+    </aside>
+    <main class="wd-main">
+      <header class="wd-topbar">
+        <div>
+          <p class="wd-eyebrow">나의 시간표</p>
+          <div class="wd-title-row"><h2>이번 주</h2><span id="wd-selection" class="wd-summary" aria-live="polite">예정 5 · 완료 1</span></div>
+        </div>
+        <div class="wd-week-controls" aria-label="주 이동">
+          <button class="wd-control wd-control--arrow cursor-interaction" id="wd-prev" type="button" aria-label="이전 주">‹</button>
+          <button class="wd-control cursor-interaction" id="wd-today" type="button">오늘</button>
+          <button class="wd-control wd-control--arrow cursor-interaction" id="wd-next" type="button" aria-label="다음 주">›</button>
+          <span class="wd-range" id="wd-range" aria-live="polite">9월 21일 — 27일</span>
+        </div>
+      </header>
+
+      <section class="wd-plan-strip" aria-label="시간 배정 전 할 일">
+        <span class="wd-plan-copy"><b>시간 배정 전</b> · 필요한 날에 끌어 놓기</span>
+        <div class="wd-plan-items">
+          <button class="wd-task-chip cursor-interaction" type="button">책 반납일 확인하기 · 10분</button>
+          <button class="wd-task-chip cursor-interaction" type="button">주간 회고 한 줄 · 20분</button>
+        </div>
+      </section>
+
+      <section class="wd-calendar" aria-label="9월 21일부터 27일까지의 주간 시간표">
+        <div class="wd-calendar-head" aria-hidden="true">
+          <div class="wd-head-spacer"></div>
+          <div class="wd-day-head"><span>월</span><b>21</b></div>
+          <div class="wd-day-head wd-day-head--today"><span>화 · 오늘</span><b>22</b></div>
+          <div class="wd-day-head"><span>수</span><b>23</b></div>
+          <div class="wd-day-head"><span>목</span><b>24</b></div>
+          <div class="wd-day-head"><span>금</span><b>25</b></div>
+          <div class="wd-day-head"><span>토</span><b>26</b></div>
+          <div class="wd-day-head"><span>일</span><b>27</b></div>
+        </div>
+        <div class="wd-calendar-body">
+          <div class="wd-time-rail" aria-hidden="true"><span class="wd-time-label">09</span><span class="wd-time-label">11</span><span class="wd-time-label">13</span><span class="wd-time-label">15</span><span class="wd-time-label">17</span><span class="wd-time-label">19</span></div>
+          <div class="wd-day-column" data-day="월 · 21"><button class="wd-event wd-event--lavender wd-event--one cursor-interaction" type="button" aria-pressed="false"><strong>기획안 초안 다듬기</strong><small>09:30 — 11:00</small></button></div>
+          <div class="wd-day-column wd-day-column--today" data-day="화 · 22"><button class="wd-event wd-event--mint wd-event--two cursor-interaction" type="button" aria-pressed="false"><strong>영어 단어 복습</strong><small>13:00 — 13:30</small></button></div>
+          <div class="wd-day-column" data-day="수 · 23"><button class="wd-event wd-event--peach wd-event--three cursor-interaction" type="button" aria-pressed="false"><strong>팀 미팅 준비</strong><small>15:30 — 16:15</small></button></div>
+          <div class="wd-day-column" data-day="목 · 24"><button class="wd-event wd-event--lavender wd-event--four cursor-interaction" type="button" aria-pressed="false"><strong>포트폴리오 정리</strong><small>12:00 — 13:30</small></button></div>
+          <div class="wd-day-column" data-day="금 · 25"><button class="wd-event wd-event--mint wd-event--five cursor-interaction" type="button" aria-pressed="false"><strong>운동 가기</strong><small>17:30 — 18:15</small></button></div>
+          <div class="wd-day-column" data-day="토 · 26"></div>
+          <div class="wd-day-column" data-day="일 · 27"></div>
+        </div>
+        <div class="wd-calendar-note"><b>한 칸의 약속</b> · 색은 카테고리를, 체크는 완료 상태를 뜻하도록 분리해요.</div>
+      </section>
+    </main>
+  </section>
+  <script>
+    (() => {
+      const root = document.getElementById("weekly-diary-mockup");
+      const range = document.getElementById("wd-range");
+      const selection = document.getElementById("wd-selection");
+      const weeks = ["9월 14일 — 20일", "9월 21일 — 27일", "9월 28일 — 10월 4일"];
+      let weekIndex = 1;
+
+      const paintWeek = () => { range.textContent = weeks[weekIndex]; };
+      document.getElementById("wd-prev").addEventListener("click", () => { weekIndex = Math.max(0, weekIndex - 1); paintWeek(); });
+      document.getElementById("wd-next").addEventListener("click", () => { weekIndex = Math.min(weeks.length - 1, weekIndex + 1); paintWeek(); });
+      document.getElementById("wd-today").addEventListener("click", () => { weekIndex = 1; paintWeek(); });
+
+      root.querySelectorAll(".wd-event").forEach((event) => {
+        event.addEventListener("click", () => {
+          const isSelected = event.getAttribute("aria-pressed") === "true";
+          root.querySelectorAll(".wd-event").forEach((item) => item.setAttribute("aria-pressed", "false"));
+          event.setAttribute("aria-pressed", String(!isSelected));
+          selection.textContent = isSelected ? "예정 5 · 완료 1" : `${event.querySelector("strong").textContent} 선택됨`;
+        });
+      });
+
+      const tweakState = { density: "standard", lavender: "#8f7ce7" };
+      const renderTweak = () => {
+        root.dataset.density = tweakState.density;
+        root.style.setProperty("--wd-lavender", tweakState.lavender);
+      };
+      if (globalThis.Tweak) {
+        const tweak = new Tweak({ container: root, onChange: renderTweak });
+        tweak.addSelect(tweakState, "density", { label: "시간표 밀도", options: [{ label: "기본", value: "standard" }, { label: "여유롭게", value: "airy" }, { label: "촘촘하게", value: "compact" }] });
+        tweak.addColorPicker(tweakState, "lavender", { label: "강조색", reference: "--wd-lavender" });
+      }
+      renderTweak();
+    })();
+  </script>
+</div>

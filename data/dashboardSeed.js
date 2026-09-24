@@ -1,0 +1,70 @@
+export const dashboardSeed = {
+  date: "2026-09-22T09:00:00+09:00",
+  timeZone: "Asia/Seoul",
+  user: {
+    name: "민지",
+    initials: "MJ",
+  },
+  tasks: [
+    {
+      id: "task-focus",
+      title: "기획안 초안 다듬기",
+      durationMinutes: 90,
+      priority: "high",
+      category: "프로젝트",
+      completed: false,
+    },
+    {
+      id: "task-study",
+      title: "영어 단어 복습",
+      durationMinutes: 30,
+      priority: "medium",
+      category: "루틴",
+      completed: true,
+    },
+    {
+      id: "task-call",
+      title: "팀 미팅 준비",
+      durationMinutes: 45,
+      priority: "high",
+      category: "업무",
+      completed: false,
+    },
+    {
+      id: "task-inbox-1",
+      title: "주간 회고 한 줄 쓰기",
+      durationMinutes: 20,
+      priority: "low",
+      category: "나를 위한 시간",
+      completed: false,
+    },
+    {
+      id: "task-inbox-2",
+      title: "책 반납일 확인하기",
+      durationMinutes: 10,
+      priority: "medium",
+      category: "생활",
+      completed: false,
+    },
+  ],
+  events: [
+    {
+      id: "event-focus",
+      taskId: "task-focus",
+      start: "2026-09-22T09:30:00+09:00",
+      end: "2026-09-22T11:00:00+09:00",
+    },
+    {
+      id: "event-study",
+      taskId: "task-study",
+      start: "2026-09-22T13:00:00+09:00",
+      end: "2026-09-22T13:30:00+09:00",
+    },
+    {
+      id: "event-call",
+      taskId: "task-call",
+      start: "2026-09-22T15:30:00+09:00",
+      end: "2026-09-22T16:15:00+09:00",
+    },
+  ],
+};
