@@ -1,7 +1,7 @@
 import { validateTodoDraft } from "../todos/todoModel.js";
 
 const DURATION_STEP_MINUTES = 30;
-const DEFAULT_FOLLOW_UP = "언제, 얼마나 할지 조금만 더 알려주세요.";
+const FOLLOW_UP_MESSAGE = "언제, 얼마나 할지 조금만 더 알려주세요.";
 
 function toLocalDate(isoDateTime) {
   const match = /^(\d{4}-\d{2}-\d{2})T\d{2}:\d{2}/.exec(String(isoDateTime ?? ""));
@@ -24,7 +24,7 @@ export function scheduleToTodoResponse(schedule) {
     return {
       success: false,
       needsMoreInfo: true,
-      message: schedule?.followUpQuestion || DEFAULT_FOLLOW_UP,
+      message: FOLLOW_UP_MESSAGE,
     };
   }
 

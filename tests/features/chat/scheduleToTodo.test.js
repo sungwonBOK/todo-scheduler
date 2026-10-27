@@ -8,7 +8,6 @@ const readySchedule = {
   endAt: "2026-10-28T16:00:00+09:00",
   durationMinutes: 60,
   ready: true,
-  followUpQuestion: null,
 };
 
 describe("scheduleToTodoResponse", () => {
@@ -27,10 +26,10 @@ describe("scheduleToTodoResponse", () => {
   });
 
   it("asks a follow-up question when the schedule is not ready", () => {
-    expect(scheduleToTodoResponse({ ...readySchedule, ready: false, followUpQuestion: "몇 시에 할까요?" })).toEqual({
+    expect(scheduleToTodoResponse({ ...readySchedule, ready: false })).toEqual({
       success: false,
       needsMoreInfo: true,
-      message: "몇 시에 할까요?",
+      message: "언제, 얼마나 할지 조금만 더 알려주세요.",
     });
   });
 

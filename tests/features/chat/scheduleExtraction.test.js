@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { extractSchedule } from "../../../features/chat/scheduleExtraction.js";
 
-const schedule = { title: "공부", startAt: "2026-10-28T15:00:00+09:00", endAt: "2026-10-28T16:00:00+09:00", durationMinutes: 60, ready: true, followUpQuestion: null };
+const schedule = { title: "공부", startAt: "2026-10-28T15:00:00+09:00", endAt: "2026-10-28T16:00:00+09:00", durationMinutes: 60, ready: true };
 
 function okResponse(content) {
   return { ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify(content) } }] }) };

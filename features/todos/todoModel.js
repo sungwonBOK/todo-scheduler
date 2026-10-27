@@ -54,6 +54,17 @@ export function validateTodoDraft(draft) {
   };
 }
 
+function pickDateTimes(draft) {
+  const dateTimes = {};
+
+  if (typeof draft?.startAt === "string" && typeof draft?.endAt === "string") {
+    dateTimes.startAt = draft.startAt;
+    dateTimes.endAt = draft.endAt;
+  }
+
+  return dateTimes;
+}
+
 export function createTodo(draft, createId = createTaskId) {
   return {
     id: createId(),
@@ -61,6 +72,7 @@ export function createTodo(draft, createId = createTaskId) {
     startDate: draft?.startDate,
     dueDate: draft?.dueDate,
     durationMinutes: Number(draft?.durationMinutes),
+    ...pickDateTimes(draft),
     priority: "medium",
     category: "Inbox",
     completed: false,

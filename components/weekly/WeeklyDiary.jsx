@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { CalendarDays, Check, ChevronLeft, ChevronRight, Clock3, Inbox } from "lucide-react";
 
 import { getInboxTasks } from "../../features/dashboard/dashboardModel.js";
+import { getTodoEvents } from "../../features/todos/todoEvents.js";
 import { useTodos } from "../../features/todos/TodoProvider.jsx";
 import { formatScheduleTime } from "../../lib/dateFormatters.js";
 import {
@@ -48,7 +49,8 @@ export default function WeeklyDiary({ initialData }) {
   const { tasks, toggleTodoComplete } = useTodos();
   const [weekOffset, setWeekOffset] = useState(0);
   const timeZone = initialData?.timeZone || "Asia/Seoul";
-  const events = initialData?.events ?? [];
+  const seedEvents = initialData?.events ?? [];
+  const events = useMemo(() => [...seedEvents, ...getTodoEvents(tasks)], [seedEvents, tasks]);
   const baseDate = initialData?.date;
 
   const visibleWeekDate = useMemo(

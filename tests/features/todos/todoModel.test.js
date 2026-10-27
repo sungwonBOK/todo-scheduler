@@ -81,4 +81,17 @@ describe("todoModel", () => {
       syncStatus: "pending",
     });
   });
+
+  it("keeps start and end times when both are provided", async () => {
+    const { createTodo } = await loadTodoModel();
+
+    expect(createTodo({
+      ...validDraft,
+      startAt: "2026-09-23T15:00:00+09:00",
+      endAt: "2026-09-23T17:00:00+09:00",
+    }, () => "task-timed")).toMatchObject({
+      startAt: "2026-09-23T15:00:00+09:00",
+      endAt: "2026-09-23T17:00:00+09:00",
+    });
+  });
 });
