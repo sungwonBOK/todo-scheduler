@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { ArrowUp, MessageCircle, Sparkles, X } from "lucide-react";
 
-export default function ChatPanel({ id, draft, messages, onClose, onDraftChange, onSend }) {
+export default function ChatPanel({ id, draft, isSending, messages, onClose, onDraftChange, onSend }) {
   const inputRef = useRef(null);
   const historyRef = useRef(null);
   const isComposingRef = useRef(false);
@@ -66,17 +66,30 @@ export default function ChatPanel({ id, draft, messages, onClose, onDraftChange,
         </div>
         <div aria-label="대화 내용" aria-live="polite" aria-relevant="additions" className="space-y-3" role="log">
           {messages.map((message) => (
-            <div className="flex justify-end" key={message.id}>
-              <p className="max-w-[88%] whitespace-pre-wrap break-words rounded-2xl rounded-br-sm bg-[#8f7ce7] px-4 py-3 text-sm leading-6 text-white [overflow-wrap:anywhere]">
-                <span className="sr-only">나: </span>{message.content}
-              </p>
-            </div>
+            message.role === "assistant" ? (
+              <div className="flex justify-start" key={message.id}>
+                <p className="max-w-[88%] whitespace-pre-wrap break-words rounded-2xl rounded-tl-sm bg-[#f5f2ff] px-4 py-3 text-sm leading-6 text-[#4d5577] [overflow-wrap:anywhere]">
+                  <span className="sr-only">일정 도우미: </span>{message.content}
+                </p>
+              </div>
+            ) : (
+              <div className="flex justify-end" key={message.id}>
+                <p className="max-w-[88%] whitespace-pre-wrap break-words rounded-2xl rounded-br-sm bg-[#8f7ce7] px-4 py-3 text-sm leading-6 text-white [overflow-wrap:anywhere]">
+                  <span className="sr-only">나: </span>{message.content}
+                </p>
+              </div>
+            )
           ))}
+          {isSending && (
+            <div className="flex justify-start">
+              <p className="rounded-2xl rounded-tl-sm bg-[#f5f2ff] px-4 py-3 text-sm text-[#727895]">일정 확인 중…</p>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="shrink-0 border-t border-[#ece4d9] bg-white px-4 pb-4 pt-3">
-        <p className="mb-3 text-xs leading-5 text-[#727895]" id={`${id}-notice`}>AI 연결 준비 중이에요. 지금은 메시지만 전송되며 일정은 추가되지 않아요.</p>
+        <p className="mb-3 text-xs leading-5 text-[#727895]" id={`${id}-notice`}>날짜와 시간을 함께 적어주세요. 일정은 30분 단위로 추가돼요.</p>
         <form className="flex items-end gap-2 rounded-2xl border border-[#e8e0d6] bg-[#fffdfa] p-2 focus-within:border-[#aa9bea] focus-within:ring-2 focus-within:ring-[#ede9ff]" onSubmit={submitMessage}>
           <label className="sr-only" htmlFor={`${id}-input`}>일정 메시지</label>
           <textarea
@@ -91,7 +104,7 @@ export default function ChatPanel({ id, draft, messages, onClose, onDraftChange,
             rows={2}
             value={draft}
           />
-          <button aria-label="메시지 전송" className="mb-1 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#8f7ce7] text-white transition hover:bg-[#7d68d4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8f7ce7] disabled:cursor-not-allowed disabled:bg-[#eeebf5] disabled:text-[#b1a9c9]" disabled={!draft.trim()} type="submit">
+          <button aria-label="메시지 전송" className="mb-1 grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#8f7ce7] text-white transition hover:bg-[#7d68d4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8f7ce7] disabled:cursor-not-allowed disabled:bg-[#eeebf5] disabled:text-[#b1a9c9]" disabled={!draft.trim() || isSending} type="submit">
             <ArrowUp size={19} aria-hidden="true" />
           </button>
         </form>
