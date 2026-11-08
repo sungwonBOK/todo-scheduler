@@ -1,7 +1,6 @@
 import { Sparkles } from "lucide-react";
 
 import { formatKoreanDay } from "../../lib/dateFormatters.js";
-import TodoAddControl from "../todos/TodoAddControl";
 
 export default function DashboardHeader({ user, dateValue, timeZone }) {
   const date = formatKoreanDay(dateValue, timeZone);
@@ -22,7 +21,6 @@ export default function DashboardHeader({ user, dateValue, timeZone }) {
         </p>
       </div>
       <div className="flex items-center gap-3">
-        <TodoAddControl />
         <span className="grid h-10 w-10 place-items-center rounded-full border border-[#ece4d9] bg-white text-[#5f6680]" aria-label="알림 기능은 준비 중입니다" title="알림 기능은 준비 중입니다">
           <span aria-hidden="true">🔔</span>
         </span>

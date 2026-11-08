@@ -1,25 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  getInboxTasks,
-  getWeekProgress,
-} from "../../../features/dashboard/dashboardModel.js";
+import { getWeekProgress } from "../../../features/dashboard/dashboardModel.js";
 
 describe("dashboardModel", () => {
-  it("keeps only incomplete tasks without a scheduled event in the Inbox", () => {
-    const tasks = [
-      { id: "inbox-task", title: "Draft agenda", completed: false, durationMinutes: 20 },
-      { id: "scheduled-task", title: "Prepare slides", completed: false, durationMinutes: 45 },
-      { id: "completed-task", title: "Send recap", completed: true, durationMinutes: 15 },
-    ];
-    const events = [
-      { id: "event-1", taskId: "scheduled-task" },
-      { id: "event-2", taskId: "completed-task" },
-    ];
-
-    expect(getInboxTasks(tasks, events)).toEqual([tasks[0]]);
-  });
-
   it("calculates weekly task and minute progress from a hand-checked fixture", () => {
     const tasks = [
       { id: "task-1", completed: false, durationMinutes: 30 },

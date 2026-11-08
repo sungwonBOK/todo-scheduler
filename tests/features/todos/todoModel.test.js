@@ -66,7 +66,7 @@ describe("todoModel", () => {
     });
   });
 
-  it("creates a normalized pending todo", async () => {
+  it("creates a normalized todo without retired Inbox or browser sync metadata", async () => {
     const { createTodo } = await loadTodoModel();
 
     expect(createTodo(validDraft, () => "task-new")).toEqual({
@@ -76,9 +76,7 @@ describe("todoModel", () => {
       dueDate: "2026-09-25",
       durationMinutes: 120,
       priority: "medium",
-      category: "Inbox",
       completed: false,
-      syncStatus: "pending",
     });
   });
 

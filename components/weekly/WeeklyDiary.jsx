@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarDays, Check, ChevronLeft, ChevronRight, Clock3, Inbox } from "lucide-react";
+import { CalendarDays, Check, ChevronLeft, ChevronRight, Clock3 } from "lucide-react";
 
-import { getInboxTasks } from "../../features/dashboard/dashboardModel.js";
+import { getTasksOnDate, getTasksInRange } from "../../features/todos/todoCalendar.js";
 import { getTodoEvents } from "../../features/todos/todoEvents.js";
 import { useTodos } from "../../features/todos/TodoProvider.jsx";
 import { formatScheduleTime } from "../../lib/dateFormatters.js";
@@ -16,7 +16,7 @@ import {
 } from "../../lib/weekCalendar.js";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import TodoAddControl from "../todos/TodoAddControl";
+import TodoChecklist from "../todos/TodoChecklist.jsx";
 
 const START_HOUR = 8;
 const END_HOUR = 20;
@@ -46,12 +46,12 @@ function formatTimeRange(event, timeZone) {
 }
 
 export default function WeeklyDiary({ initialData }) {
-  const { tasks, toggleTodoComplete } = useTodos();
+  const { tasks, toggleTodoComplete, todayDate } = useTodos();
   const [weekOffset, setWeekOffset] = useState(0);
   const timeZone = initialData?.timeZone || "Asia/Seoul";
   const seedEvents = initialData?.events ?? [];
   const events = useMemo(() => [...seedEvents, ...getTodoEvents(tasks)], [seedEvents, tasks]);
-  const baseDate = initialData?.date;
+  const baseDate = initialData?.date ?? todayDate;
 
   const visibleWeekDate = useMemo(
     () => getWeekDate(baseDate, weekOffset, timeZone),
@@ -67,15 +67,11 @@ export default function WeeklyDiary({ initialData }) {
   );
   const taskById = useMemo(() => new Map(tasks.map((task) => [task.id, task])), [tasks]);
   const weekEvents = useMemo(() => Array.from(eventsByDay.values()).flat(), [eventsByDay]);
-  const plannedTaskIds = useMemo(
-    () => new Set(weekEvents.map((event) => event?.taskId).filter(Boolean)),
-    [weekEvents],
-  );
-  const completedPlannedTasks = useMemo(
-    () => tasks.filter((task) => plannedTaskIds.has(task.id) && task.completed).length,
-    [plannedTaskIds, tasks],
-  );
-  const inboxTasks = useMemo(() => getInboxTasks(tasks, events), [events, tasks]);
+  const timedIds = new Set(events.map(event => event.taskId));
+  const weekTasks = getTasksInRange(tasks, days[0]?.key, days.at(-1)?.key, timeZone);
+  const outsideGridByDay = new Map(days.map(day => [day.key,
+    getTasksOnDate(tasks, day.key, timeZone).filter(task => task.startAt && !getEventPlacement({ start: task.startAt, end: task.endAt }, timeZone, START_HOUR, END_HOUR)),
+  ]));
 
   return (
     <section className="p-5 sm:p-8 lg:p-10">
@@ -87,13 +83,12 @@ export default function WeeklyDiary({ initialData }) {
           </p>
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h1 className="text-3xl font-black tracking-[-0.065em] text-[#2d3559] sm:text-4xl">이번 주</h1>
-            <p className="text-sm font-bold text-[#727895]">예정 {weekEvents.length}개 · 완료 {completedPlannedTasks}개</p>
+            <p className="text-sm font-bold text-[#727895]">예정 {weekTasks.length}개 · 완료 {weekTasks.filter(task => task.completed).length}개</p>
           </div>
-          <p className="mt-2 text-sm leading-6 text-[#5f6680]">할 일은 먼저 적고, 정말 할 시간만 한 칸에 놓아보세요.</p>
+          <p className="mt-2 text-sm leading-6 text-[#5f6680]">요일별 할 일과 시간표를 함께 확인해요. 새 일정은 오른쪽 아래 도우미에게 말해주세요.</p>
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-2" aria-label="주 이동">
-          <TodoAddControl />
           <Button aria-label="이전 주" className="h-10 w-10 px-0" variant="ghost" onClick={() => setWeekOffset((current) => current - 1)}>
             <ChevronLeft size={19} aria-hidden="true" />
           </Button>
@@ -106,27 +101,6 @@ export default function WeeklyDiary({ initialData }) {
           </span>
         </div>
       </header>
-
-      <Card className="mt-7 p-4 sm:flex sm:items-center sm:justify-between sm:gap-5 sm:px-5">
-        <div className="flex items-center gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#ede9ff] text-[#6252b5]">
-            <Inbox size={19} aria-hidden="true" />
-          </span>
-          <div>
-            <p className="text-sm font-black text-[#2d3559]">배정 안됨</p>
-            <p className="mt-0.5 text-xs text-[#727895]">아직 정확한 시간을 정하지 않은 할 일이에요.</p>
-          </div>
-        </div>
-        <div className="mt-3 flex flex-wrap gap-2 sm:mt-0 sm:justify-end">
-          {inboxTasks.length ? inboxTasks.map((task) => (
-            <span key={task.id} className="rounded-full bg-[#f5f2ff] px-3 py-1.5 text-xs font-bold text-[#5948a8]">
-              {task.title}{task.durationMinutes ? ` · ${task.durationMinutes}분` : ""}
-            </span>
-          )) : (
-            <span className="text-xs font-bold text-[#727895]">시간 미정 할 일이 없어요.</span>
-          )}
-        </div>
-      </Card>
 
       <Card className="relative mt-5 overflow-hidden">
         <div className="paper-dots pointer-events-none absolute inset-x-0 top-0 h-24 opacity-45" />
@@ -145,7 +119,19 @@ export default function WeeklyDiary({ initialData }) {
               ))}
             </div>
 
+            <div className="grid grid-cols-[3rem_repeat(7,minmax(0,1fr))] border-b border-[#ece4d9] bg-[#faf8ff]">
+              <span className="px-1 py-3 text-center text-[10px] font-bold text-[#727895]">시간<br />미정</span>
+              {days.map(day => <div key={day.key} aria-label={`${day.key} 시간 미정`} className="min-w-0 border-l border-[#ece4d9] p-1.5">
+                <TodoChecklist tasks={getTasksOnDate(tasks, day.key, timeZone).filter(task => !timedIds.has(task.id))} onToggleComplete={toggleTodoComplete} emptyMessage="—" />
+              </div>)}
+            </div>
             <div className="grid grid-cols-[3rem_repeat(7,minmax(0,1fr))]">
+              {Array.from(outsideGridByDay.values()).some(list => list.length > 0) && <>
+                <span className="px-1 py-3 text-center text-[10px] font-bold text-[#727895]">그 외<br />시간</span>
+                {days.map(day => <div key={day.key} aria-label={`${day.key} 그 외 시간`} className="min-w-0 border-l border-b border-[#ece4d9] p-1.5">
+                  <TodoChecklist tasks={outsideGridByDay.get(day.key)} onToggleComplete={toggleTodoComplete} emptyMessage="—" timeZone={timeZone} />
+                </div>)}
+              </>}
               <div className="relative h-[34rem] border-r border-[#ece4d9]" aria-hidden="true">
                 {GRID_HOURS.map((hour, index) => (
                   <span

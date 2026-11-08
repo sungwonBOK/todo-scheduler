@@ -22,12 +22,7 @@ export async function POST(request) {
   }
 
   try {
-    const { syncStatus, ...newTodo } = createTodo(body);
-    if (body.startAt !== undefined) {
-      newTodo.startAt = body.startAt;
-      newTodo.endAt = body.endAt;
-    }
-    const savedTodo = addTodo(newTodo);
+    const savedTodo = addTodo(createTodo(body));
     return NextResponse.json(savedTodo, { status: 201 });
   } catch {
     return NextResponse.json({ message: "할 일을 추가하지 못했습니다." }, { status: 500 });

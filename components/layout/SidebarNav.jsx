@@ -8,6 +8,7 @@ import Logo from "../ui/Logo";
 const items = [
   { label: "오늘", icon: LayoutDashboard, href: "/", section: "today" },
   { label: "이번 주", icon: CalendarDays, href: "/week", section: "week" },
+  { label: "월별", icon: CalendarDays, href: "/month", section: "month" },
   { label: "나의 루틴", icon: Sparkles },
   { label: "설정", icon: Settings2 },
 ];

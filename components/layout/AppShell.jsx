@@ -5,6 +5,7 @@ import Link from "next/link";
 const mobileItems = [
   { href: "/", label: "오늘", section: "today" },
   { href: "/week", label: "이번 주", section: "week" },
+  { href: "/month", label: "월별", section: "month" },
 ];
 
 export default function AppShell({ activeSection = "today", children }) {

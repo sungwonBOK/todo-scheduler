@@ -74,8 +74,6 @@ export function createTodo(draft, createId = createTaskId) {
     durationMinutes: Number(draft?.durationMinutes),
     ...pickDateTimes(draft),
     priority: "medium",
-    category: "Inbox",
     completed: false,
-    syncStatus: "pending",
   };
 }

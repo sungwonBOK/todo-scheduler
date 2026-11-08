@@ -46,6 +46,12 @@ afterEach(() => {
 });
 
 describe("natural language to TODO", () => {
+  it("saves a date-only chat request without inventing a clock time", async () => {
+    createResponse.mockResolvedValue(complete({ title: "책 반납", startDate: "2026-11-09", startAt: null, endAt: null, durationMinutes: 60, ready: true }));
+    const result = await extractTodoSchedule("오늘 책 반납");
+    expect(result).toEqual({ success: true, todo: { title: "책 반납", startDate: "2026-11-09", dueDate: "2026-11-09", durationMinutes: 60 } });
+    expect((await save(request(result.todo))).status).toBe(201);
+  });
   it("converts structured output to the existing draft and passes Seoul's current date", async () => {
     const result = await extractTodoSchedule("내일 오후 3시에 공부 추가해줘", {
       now: new Date("2026-10-26T15:30:00Z"),

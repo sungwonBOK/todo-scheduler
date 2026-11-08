@@ -5,7 +5,7 @@ import { dashboardSeed } from "../../data/dashboardSeed";
 export default function HomePage() {
   return (
     <AppShell>
-      <Dashboard initialData={dashboardSeed} />
+      <Dashboard initialData={{ user: dashboardSeed.user, timeZone: dashboardSeed.timeZone }} />
     </AppShell>
   );
 }

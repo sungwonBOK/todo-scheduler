@@ -31,7 +31,7 @@ export default function TodayTimeline({ events, taskById, onToggleComplete, time
 
       <div className="relative mt-7 space-y-3">
         {timelineEvents.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-[#dfd5ca] bg-[#fffdfa] px-5 py-10 text-center text-sm text-[#5f6680]">오늘은 비어 있어요. Inbox에서 할 일을 추가해 보세요.</div>
+          <div className="rounded-2xl border border-dashed border-[#dfd5ca] bg-[#fffdfa] px-5 py-10 text-center text-sm text-[#5f6680]">시간이 정해진 일정이 없어요. 오른쪽 아래 일정 도우미에게 말해보세요.</div>
         ) : (
           timelineEvents.map((event) => {
             const task = taskById?.get(event.taskId);
@@ -67,7 +67,9 @@ export default function TodayTimeline({ events, taskById, onToggleComplete, time
                     </div>
                     <span className="rounded-lg p-1 opacity-60" aria-label={`${displayTask.title} 상세 기능은 준비 중입니다`} title="상세 기능은 준비 중입니다"><MoreHorizontal size={18} aria-hidden="true" /></span>
                   </div>
-                  <span className="mt-3 inline-flex rounded-full bg-white/65 px-2 py-1 text-[11px] font-bold">{displayTask.category || "오늘의 할 일"}</span>
+                  {displayTask.category && displayTask.category !== "Inbox" && (
+                    <span className="mt-3 inline-flex rounded-full bg-white/65 px-2 py-1 text-[11px] font-bold">{displayTask.category}</span>
+                  )}
                 </div>
               </article>
             );

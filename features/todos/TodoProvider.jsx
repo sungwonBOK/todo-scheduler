@@ -3,11 +3,13 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 import { validateTodoDraft } from "./todoModel.js";
+import { useCalendarToday } from "../calendar/useCalendarToday.js";
 
 const TodoContext = createContext(null);
 
 export function TodoProvider({ children, initialTasks = [] }) {
   const [tasks, setTasks] = useState(initialTasks);
+  const todayDate = useCalendarToday();
 
   const refreshTodos = useCallback(async () => {
     const response = await fetch("/api/todos", { cache: "no-store" });
@@ -93,11 +95,12 @@ export function TodoProvider({ children, initialTasks = [] }) {
   }, [tasks]);
 
   const value = useMemo(() => ({
+    todayDate,
     tasks,
     addTodo,
     toggleTodoComplete,
     refreshTodos,
-  }), [tasks, addTodo, toggleTodoComplete, refreshTodos]);
+  }), [tasks, addTodo, toggleTodoComplete, refreshTodos, todayDate]);
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 }
