@@ -3,12 +3,16 @@
 import { useId, useRef, useState } from "react";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 
+import { useTodos } from "../todos/TodoProvider.jsx";
 import ChatPanel from "./ChatPanel";
+import { submitScheduleMessage } from "./submitScheduleMessage.js";
 
 export default function ScheduleChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState([]);
+  const [isSending, setIsSending] = useState(false);
+  const { addTodo } = useTodos();
   const triggerRef = useRef(null);
   const nextMessageId = useRef(0);
   const panelId = useId();
@@ -18,14 +22,23 @@ export default function ScheduleChat() {
     requestAnimationFrame(() => triggerRef.current?.focus());
   };
 
-  const sendMessage = () => {
-    const content = draft.trim();
-    if (!content) return;
-
+  const appendMessage = (role, content) => {
     nextMessageId.current += 1;
-    const message = { id: nextMessageId.current, content };
-    setMessages((current) => [...current, message]);
+    setMessages((current) => [...current, { id: nextMessageId.current, role, content }]);
+  };
+
+  const sendMessage = async () => {
+    const content = draft.trim();
+    if (!content || isSending) return;
+
+    appendMessage("user", content);
     setDraft("");
+    setIsSending(true);
+
+    const reply = await submitScheduleMessage(content, addTodo);
+
+    appendMessage("assistant", reply.text);
+    setIsSending(false);
   };
 
   return (
@@ -34,6 +47,7 @@ export default function ScheduleChat() {
         <ChatPanel
           draft={draft}
           id={panelId}
+          isSending={isSending}
           messages={messages}
           onClose={closePanel}
           onDraftChange={setDraft}
