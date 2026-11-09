@@ -11,7 +11,7 @@ const EMPTY_VALUES = {
   passwordConfirmation: "",
 };
 
-function Field({ error, id, label, name, onChange, type = "text", value }) {
+function Field({ autoComplete, error, id, label, name, onChange, type = "text", value }) {
   const errorId = `${id}-error`;
 
   return createElement(
@@ -22,6 +22,8 @@ function Field({ error, id, label, name, onChange, type = "text", value }) {
       className: "w-full rounded-xl border border-[#e8e0d6] bg-[#fffdfa] px-3.5 py-3 text-sm text-[#2d3559] outline-none transition placeholder:text-[#b1b2c2] focus:border-[#aa9bea] focus:ring-4 focus:ring-[#ede9ff]",
       id,
       name,
+      autoComplete,
+      required: true,
       placeholder: label === "이메일" ? "hello@example.com" : undefined,
       type,
       value,
@@ -62,6 +64,7 @@ export default function AuthForm({ mode, onSuccess }) {
       id: "auth-name",
       label: "이름",
       name: "name",
+      autoComplete: "name",
       onChange: handleChange,
       value: values.name,
     }),
@@ -70,6 +73,7 @@ export default function AuthForm({ mode, onSuccess }) {
       id: "auth-email",
       label: "이메일",
       name: "email",
+      autoComplete: "email",
       onChange: handleChange,
       type: "email",
       value: values.email,
@@ -79,6 +83,7 @@ export default function AuthForm({ mode, onSuccess }) {
       id: "auth-password",
       label: "비밀번호",
       name: "password",
+      autoComplete: isSignup ? "new-password" : "current-password",
       onChange: handleChange,
       type: "password",
       value: values.password,
@@ -88,6 +93,7 @@ export default function AuthForm({ mode, onSuccess }) {
       id: "auth-password-confirmation",
       label: "비밀번호 확인",
       name: "passwordConfirmation",
+      autoComplete: "new-password",
       onChange: handleChange,
       type: "password",
       value: values.passwordConfirmation,

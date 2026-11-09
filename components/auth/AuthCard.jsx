@@ -6,14 +6,14 @@ const COPY = {
   login: {
     description: "오늘의 할 일을 차분히 정리해 볼까요?",
     linkHref: "/signup",
-    linkLabel: "처음이신가요? 데모 시작하기",
+    linkLabel: "아직 계정이 없으신가요? 회원가입",
     title: "다시 만나 반가워요",
   },
   signup: {
-    description: "간단한 데모로 할 일 계획을 둘러보세요.",
+    description: "나만의 하루를 계획할 준비를 시작해 보세요.",
     linkHref: "/login",
-    linkLabel: "이미 둘러보셨나요? 로그인으로",
-    title: "Todo Scheduler 시작하기",
+    linkLabel: "이미 계정이 있으신가요? 로그인",
+    title: "회원가입",
   },
 };
 
@@ -32,7 +32,7 @@ export default function AuthCard({ children, mode }) {
       </h1>
       <p className="mt-3 leading-6 text-[#727895]">{copy.description}</p>
       <p className="mt-2 rounded-xl bg-[#fff7ef] px-3 py-2.5 text-xs leading-5 text-[#977466]">
-        입력한 정보는 데모 화면으로 이동하는 데에만 사용되며, 실제 계정은 만들어지지 않아요.
+        화면 미리보기입니다. 실제 계정은 생성되지 않으며, 이메일과 비밀번호는 저장하거나 전송하지 않아요. 로그인하면 이 탭에서 홈 화면을 둘러볼 수 있어요.
       </p>
       <div className="mt-8">{children}</div>
       <Link
